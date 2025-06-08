@@ -1,0 +1,2805 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlazeShop - Enhanced Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="shortcut icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>"
+        type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            /* Light Theme Colors */
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --bg-accent: #e9ecef;
+            --text-primary: #212529;
+            --text-secondary: #495057;
+            --text-muted: #6c757d;
+
+            /* Accent Colors */
+            --color-pink: #ff6b8b;
+            --color-blue: #4361ee;
+            --color-green: #2ecc71;
+            --color-orange: #ff9f43;
+            --color-red: #ff4757;
+            --color-purple: #9b59b6;
+            --color-gold: #d4af37;
+
+            /* Status Colors */
+            --color-success: var(--color-green);
+            --color-warning: var(--color-orange);
+            --color-danger: var(--color-red);
+            --color-info: var(--color-blue);
+
+            /* Border, Shadow & Effect Colors */
+            --border-color: #dee2e6;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --hover-bg: rgba(0, 0, 0, 0.05);
+
+            /* Font Settings */
+            --font-main: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            --fs-h1: 1.75rem;
+            --fs-h2: 1.5rem;
+            --fs-h3: 1.25rem;
+            --fs-body: 0.9375rem;
+            --fs-small: 0.875rem;
+            --fs-xs: 0.75rem;
+
+            /* Font Weights */
+            --fw-light: 300;
+            --fw-regular: 500;
+            --fw-bold: 700;
+
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+
+            /* Border Radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-full: 50%;
+
+            /* Animation */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+
+            /* Table Styles */
+            --table-header-bg: #f1f3f5;
+            --table-hover-bg: rgba(0, 0, 0, 0.02);
+            --table-border: #e9ecef;
+
+            /* Chart Colors */
+            --chart-color1: var(--color-pink);
+            --chart-color2: var(--color-blue);
+            --chart-color3: var(--color-green);
+            --chart-color4: var(--color-orange);
+
+            /* Other UI Elements */
+            --btn-primary-bg: var(--color-pink);
+            --btn-primary-text: white;
+            --btn-primary-hover: #ff4971;
+            --input-bg: white;
+            --input-border: #ced4da;
+            --input-focus: var(--color-pink);
+        }
+
+        /* Dark Theme Variables */
+        [data-theme="dark"] {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-accent: #2a2a2a;
+            --text-primary: #f8f9fa;
+            --text-secondary: #e9ecef;
+            --text-muted: #adb5bd;
+
+            /* Border, Shadow & Effect Colors */
+            --border-color: #2c2c2c;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --hover-bg: rgba(255, 255, 255, 0.05);
+
+            /* Table Styles */
+            --table-header-bg: #2a2a2a;
+            --table-hover-bg: rgba(255, 255, 255, 0.05);
+            --table-border: #2c2c2c;
+
+            /* Other UI Elements */
+            --btn-primary-bg: var(--color-pink);
+            --btn-primary-text: white;
+            --btn-primary-hover: #ff4971;
+            --input-bg: #2a2a2a;
+            --input-border: #3a3a3a;
+            --input-focus: var(--color-pink);
+        }
+
+        /* Base Styles */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background-color var(--transition-normal), color var(--transition-normal);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            font-weight: var(--fw-regular);
+            font-size: var(--fs-small);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+            outline: none;
+        }
+
+        .btn-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-icon:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text);
+        }
+
+        .btn-primary:hover {
+            background: var(--btn-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 139, 0.3);
+        }
+
+        .btn-success {
+            background: var(--color-green);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-danger {
+            background: var(--color-red);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #e74c3c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+        }
+
+        .btn-warning {
+            background: var(--color-orange);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 159, 67, 0.3);
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        /* Header */
+        .admin-header {
+            background: var(--bg-secondary);
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background-color var(--transition-normal), border-color var(--transition-normal);
+        }
+
+        .admin-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .admin-title {
+            color: var(--text-primary);
+            font-size: var(--fs-h2);
+            font-weight: var(--fw-bold);
+            transition: color var(--transition-normal);
+        }
+
+        .admin-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        /* Back to Site Button */
+        .back-to-site-btn {
+            background: linear-gradient(135deg, var(--color-pink), #ff8fab);
+            color: white;
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            font-size: var(--fs-small);
+            font-weight: var(--fw-regular);
+            text-transform: uppercase;
+            transition: all var(--transition-normal);
+            box-shadow: 0 4px 15px rgba(255, 107, 139, 0.3);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .back-to-site-btn:hover {
+            background: linear-gradient(135deg, #ff8fab, var(--color-pink));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 139, 0.4);
+        }
+
+        /* User Avatar */
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--text-primary);
+            font-weight: var(--fw-regular);
+            transition: color var(--transition-normal);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background: var(--color-pink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: var(--fw-bold);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle-btn {
+            background: var(--bg-accent);
+            color: var(--text-secondary);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-normal);
+            font-size: 1.1rem;
+        }
+
+        .theme-toggle-btn:hover {
+            background: var(--color-pink);
+            color: white;
+            transform: rotate(15deg);
+        }
+
+        /* Layout */
+        .admin-layout {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: var(--space-lg) 0;
+            transition: all var(--transition-normal);
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            margin-bottom: var(--space-xs);
+            transition: all var(--transition-normal);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: var(--fw-regular);
+            transition: all var(--transition-normal);
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+            border-left-color: var(--color-pink);
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(255, 107, 139, 0.1), transparent);
+            color: var(--color-pink);
+            border-left-color: var(--color-pink);
+        }
+
+        .sidebar-icon {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: var(--space-lg);
+            overflow-y: auto;
+            background: var(--bg-primary);
+            transition: background-color var(--transition-normal);
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: var(--space-lg);
+        }
+
+        .page-title {
+            color: var(--text-primary);
+            font-size: var(--fs-h1);
+            font-weight: var(--fw-bold);
+            margin-bottom: var(--space-xs);
+            transition: color var(--transition-normal);
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: var(--fs-small);
+            transition: color var(--transition-normal);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 2px 12px var(--shadow-color);
+            overflow: hidden;
+            transition: all var(--transition-normal);
+            margin-bottom: var(--space-lg);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .card-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            color: var(--text-primary);
+            font-size: var(--fs-h3);
+            font-weight: var(--fw-bold);
+            transition: color var(--transition-normal);
+        }
+
+        .card-body {
+            padding: var(--space-lg);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .stat-card {
+            padding: var(--space-lg);
+            transition: all var(--transition-normal);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-md);
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-title {
+            color: var(--text-secondary);
+            font-size: var(--fs-xs);
+            font-weight: var(--fw-regular);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color var(--transition-normal);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon.sales {
+            background: var(--color-pink);
+        }
+
+        .stat-icon.customers {
+            background: var(--color-orange);
+        }
+
+        .stat-icon.revenue {
+            background: var(--color-blue);
+        }
+
+        .stat-icon.products {
+            background: var(--color-purple);
+        }
+
+        .stat-value {
+            color: var(--text-primary);
+            font-size: var(--fs-h2);
+            font-weight: var(--fw-bold);
+            margin-bottom: var(--space-xs);
+            transition: color var(--transition-normal);
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-change {
+            font-size: var(--fs-xs);
+            font-weight: var(--fw-regular);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-change.positive {
+            color: var(--color-green);
+        }
+
+        .stat-change.negative {
+            color: var(--color-red);
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255, 107, 139, 0.05) 0%, rgba(255, 107, 139, 0) 70%);
+            border-radius: 50%;
+            transition: all var(--transition-normal);
+            z-index: 1;
+        }
+
+        .stat-card:nth-child(2)::after {
+            background: radial-gradient(circle, rgba(255, 159, 67, 0.05) 0%, rgba(255, 159, 67, 0) 70%);
+        }
+
+        .stat-card:nth-child(3)::after {
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.05) 0%, rgba(67, 97, 238, 0) 70%);
+        }
+
+        .stat-card:nth-child(4)::after {
+            background: radial-gradient(circle, rgba(155, 89, 182, 0.05) 0%, rgba(155, 89, 182, 0) 70%);
+        }
+
+        .stat-card:hover::after {
+            transform: scale(1.5);
+        }
+
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        /* Revenue Period Selector */
+        .revenue-controls {
+            display: flex;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .period-btn {
+            padding: var(--space-xs) var(--space-md);
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: var(--fs-xs);
+        }
+
+        .period-btn.active {
+            background: var(--color-pink);
+            color: white;
+            border-color: var(--color-pink);
+        }
+
+        .period-btn:hover {
+            background: var(--hover-bg);
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: var(--space-md) var(--space-lg);
+            text-align: left;
+            transition: all var(--transition-normal);
+        }
+
+        .data-table th {
+            background: var(--table-header-bg);
+            color: var(--text-primary);
+            font-weight: var(--fw-regular);
+            font-size: var(--fs-small);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--table-border);
+        }
+
+        .data-table td {
+            color: var(--text-secondary);
+            font-size: var(--fs-small);
+            border-bottom: 1px solid var(--table-border);
+        }
+
+        .data-table tbody tr {
+            transition: background-color var(--transition-fast);
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--table-hover-bg);
+        }
+
+        .product-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            font-size: var(--fs-xs);
+            font-weight: var(--fw-regular);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active {
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--color-green);
+        }
+
+        .status-pending {
+            background: rgba(255, 159, 67, 0.15);
+            color: var(--color-orange);
+        }
+
+        .status-inactive {
+            background: rgba(108, 117, 125, 0.15);
+            color: var(--text-muted);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: var(--space-md);
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-primary);
+            font-size: var(--fs-small);
+            font-weight: var(--fw-regular);
+            margin-bottom: var(--space-xs);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--input-border);
+            border-radius: var(--radius-md);
+            font-size: var(--fs-small);
+            color: var(--text-primary);
+            background: var(--input-bg);
+            transition: all var(--transition-fast);
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(255, 107, 139, 0.2);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-md);
+        }
+
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .file-upload:hover {
+            border-color: var(--color-pink);
+            background: rgba(255, 107, 139, 0.05);
+        }
+
+        .file-upload-icon {
+            font-size: 3rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .file-upload-text {
+            color: var(--text-secondary);
+            font-size: var(--fs-small);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(20px);
+            transition: all var(--transition-normal);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .modal-title {
+            color: var(--text-primary);
+            font-size: var(--fs-h3);
+            font-weight: var(--fw-bold);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            color: var(--color-red);
+        }
+
+        /* Tags Input */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            padding: var(--space-sm);
+            border: 1px solid var(--input-border);
+            border-radius: var(--radius-md);
+            background: var(--input-bg);
+            min-height: 40px;
+            cursor: text;
+        }
+
+        .tags-container:focus-within {
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(255, 107, 139, 0.2);
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            background: var(--color-pink);
+            color: white;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            font-size: var(--fs-xs);
+        }
+
+        .tag-remove {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tag-remove:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tag-input {
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--text-primary);
+            flex: 1;
+            min-width: 100px;
+            padding: var(--space-xs) 0;
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-sm {
+            gap: var(--space-sm);
+        }
+
+        .gap-md {
+            gap: var(--space-md);
+        }
+
+        .mt-md {
+            margin-top: var(--space-md);
+        }
+
+        .mt-lg {
+            margin-top: var(--space-lg);
+        }
+
+        .mb-sm {
+            margin-bottom: var(--space-sm);
+        }
+
+        .mb-md {
+            margin-bottom: var(--space-md);
+        }
+
+        .mb-lg {
+            margin-bottom: var(--space-lg);
+        }
+
+        .w-auto {
+            width: auto;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: var(--space-md) 0;
+            }
+
+            .sidebar-link {
+                padding: var(--space-sm) var(--space-md);
+            }
+
+            .main-content {
+                padding: var(--space-md);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: var(--space-md);
+            }
+
+            .admin-header .container {
+                flex-wrap: wrap;
+                gap: var(--space-md);
+            }
+
+            .admin-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .data-table {
+                font-size: var(--fs-xs);
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: var(--space-sm) var(--space-md);
+            }
+
+            .back-to-site-btn span {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--space-sm);
+            }
+
+            .table-actions {
+                width: 100%;
+            }
+
+            .stat-card {
+                padding: var(--space-md);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Notification Animation */
+        @keyframes slideIn {
+            0% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            0% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--radius-md);
+            color: white;
+            font-weight: var(--fw-regular);
+            z-index: 10000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s forwards, slideOut 0.3s forwards 2.7s;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .notification.success {
+            background: var(--color-green);
+        }
+
+        .notification.error {
+            background: var(--color-red);
+        }
+
+        .notification.info {
+            background: var(--color-blue);
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .admin-actions button i {
+            animation: rotate 4s linear infinite;
+        }
+
+        /* Image Preview */
+        .image-preview {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+            margin-top: var(--space-sm);
+        }
+
+        .preview-item {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-remove {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: var(--color-red);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Enhanced Login Page Styles */
+        .login-container {
+            background: var(--bg-secondary);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h2 {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: var(--fw-regular);
+        }
+
+        .login-form .input-wrapper {
+            position: relative;
+        }
+
+        .login-form .input-wrapper i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all var(--transition-fast);
+        }
+
+        .login-form input:focus {
+            border-color: var(--color-blue);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, var(--color-blue), #6a8fff);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: var(--fw-regular);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(135deg, #6a8fff, var(--color-blue));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        .login-lather-effect {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.8), rgba(67, 97, 238, 0.4), transparent 70%);
+            filter: blur(60px);
+            opacity: 0.6;
+            z-index: 1;
+            animation: pulse 8s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive login styles */
+        @media (max-width: 576px) {
+            .login-container {
+                padding: 1.5rem;
+            }
+
+            .login-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .login-lather-effect {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        /* Lather Effects Throughout Admin Panel */
+        .admin-header {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .admin-header::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            right: 10%;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.15), rgba(67, 97, 238, 0.05), transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: -1;
+            animation: float 10s infinite alternate;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: var(--space-lg) 0;
+            transition: all var(--transition-normal);
+            position: fixed;
+            top: 70px;
+            left: 0;
+            margin-right: 100px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+
+        .sidebar::before {
+            content: "";
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            bottom: 10%;
+            left: -200px;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.1), rgba(67, 97, 238, 0.05), transparent 70%);
+            border-radius: 50%;
+            filter: blur(50px);
+            z-index: -1;
+            animation: float 15s infinite alternate-reverse;
+        }
+
+        .main-content {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            margin-left: 280px;
+            /* same as sidebar width */
+        }
+
+        .main-content::before {
+            content: "";
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            top: 30%;
+            right: -300px;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.08), rgba(67, 97, 238, 0.03), transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: -1;
+            animation: float 20s infinite alternate;
+        }
+
+        .card {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            top: -50px;
+            right: -50px;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.1), transparent 70%);
+            border-radius: 50%;
+            filter: blur(20px);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-20px) scale(1.05);
+            }
+
+            100% {
+                transform: translateY(20px) scale(0.95);
+            }
+        }
+
+        /* Remove the old glow effects */
+        #adminLoginOverlay::after,
+        #admin-header::after {
+            display: none;
+        }
+
+        /* Dark theme adjustments for lather effects */
+        [data-theme="dark"] .login-lather-effect {
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.6), rgba(67, 97, 238, 0.3), transparent 70%);
+            opacity: 0.8;
+        }
+
+        [data-theme="dark"] .admin-header::before,
+        [data-theme="dark"] .sidebar::before,
+        [data-theme="dark"] .main-content::before {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="adminLoginOverlay" style="
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    overflow: hidden;">
+        <div class="login-container">
+            <div class="login-header">
+                <h2>Blaze<span style="color: gold;">Shop</span> Admin</h2>
+                <p>Enter your credentials to access the dashboard</p>
+            </div>
+            <form onsubmit="return checkAdminCredentials()" class="login-form">
+                <div class="form-group">
+                    <label for="adminEmail">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="adminEmail" autocomplete="off" autocorrect="off"
+                            placeholder="admin@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="adminPass">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="adminPass" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Access Dashboard
+                </button>
+            </form>
+        </div>
+        <div class="login-lather-effect"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-logo">
+                <h1 class="admin-title">BlazeShop Admin Panel</h1>
+            </div>
+            <div class="admin-actions">
+                <button class="theme-toggle-btn" aria-label="Toggle theme" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="index.html" class="back-to-site-btn">
+                    <i class="fas fa-arrow-left"></i> <span>Back to Site</span>
+                </a>
+                <div class="admin-user">
+                    <div class="user-avatar">
+                        <a href="#" style="text-decoration: none; color: whitesmoke;" title="Admin">
+                            <a href="https://royz-portfolio.netlify.app" target="_blank" title="admin profile"
+                                style="text-decoration: none; color: whitesmoke;">YR</a>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt sidebar-icon"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-section="products">
+                        <i class="fas fa-box sidebar-icon"></i>
+                        Products
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-section="customers">
+                        <i class="fas fa-users sidebar-icon"></i>
+                        Customers
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-section="analytics">
+                        <i class="fas fa-chart-bar sidebar-icon"></i>
+                        Analytics
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-section="upload">
+                        <i class="fas fa-upload sidebar-icon"></i>
+                        Upload Product
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="admin-section">
+                <div class="page-header">
+                    <h2 class="page-title">Dashboard</h2>
+                    <p class="page-subtitle">Welcome to your admin dashboard</p>
+                </div>
+
+                <!-- Enhanced Stats Grid -->
+                <div class="stats-grid">
+                    <div class="card stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Total Sales</div>
+                                <div class="stat-value" id="totalSales">$24,567</div>
+                                <div class="stat-change positive">
+                                    <i class="fas fa-arrow-up"></i> 12.5% from last month
+                                </div>
+                            </div>
+                            <div class="stat-icon sales">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Total Customers</div>
+                                <div class="stat-value" id="totalCustomers">856</div>
+                                <div class="stat-change positive">
+                                    <i class="fas fa-arrow-up"></i> 15.3% from last month
+                                </div>
+                            </div>
+                            <div class="stat-icon customers">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Monthly Revenue</div>
+                                <div class="stat-value" id="monthlyRevenue">$18,945</div>
+                                <div class="stat-change negative">
+                                    <i class="fas fa-arrow-down"></i> 2.1% from last month
+                                </div>
+                            </div>
+                            <div class="stat-icon revenue">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Total Products</div>
+                                <div class="stat-value" id="totalProducts">342</div>
+                                <div class="stat-change positive">
+                                    <i class="fas fa-arrow-up"></i> 5.7% from last month
+                                </div>
+                            </div>
+                            <div class="stat-icon products">
+                                <i class="fas fa-box"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Charts -->
+                <div class="charts-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Revenue Overview</h3>
+                            <div class="revenue-controls">
+                                <button class="period-btn active" data-period="monthly">Monthly</button>
+                                <button class="period-btn" data-period="yearly">Yearly</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="revenueOverviewChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Product Performance</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="productChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products" class="admin-section hidden">
+                <div class="page-header">
+                    <h2 class="page-title">Products</h2>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">All Products</h3>
+                        <div class="table-actions">
+                            <button class="btn btn-primary" data-section="upload">
+                                <i class="fas fa-plus"></i> Add Product
+                            </button>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTable">
+                            <!-- Products will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Customers Section -->
+            <section id="customers" class="admin-section hidden">
+                <div class="page-header">
+                    <h2 class="page-title">Customers</h2>
+                    <p class="page-subtitle">Manage customer information</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">All Customers</h3>
+                        <div class="table-actions">
+                            <input type="search" class="form-input" placeholder="Search customers..."
+                                style="width: 200px;" id="customerSearch">
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Customer ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Total Spent</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersTable">
+                            <!-- Customers will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="admin-section hidden">
+                <div class="page-header">
+                    <h2 class="page-title">Analytics</h2>
+                    <p class="page-subtitle">Detailed analytics and reports with monthly/yearly data</p>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Revenue Trend</h3>
+                            <div class="revenue-controls">
+                                <button class="period-btn active" data-period="monthly"
+                                    data-chart="revenue">Monthly</button>
+                                <button class="period-btn" data-period="yearly" data-chart="revenue">Yearly</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Customer Growth</h3>
+                            <div class="revenue-controls">
+                                <button class="period-btn active" data-period="monthly"
+                                    data-chart="customer">Monthly</button>
+                                <button class="period-btn" data-period="yearly" data-chart="customer">Yearly</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="customerGrowthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Product Performance</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="productPerformanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Sales Distribution</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="salesDistributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upload Product Section -->
+            <section id="upload" class="admin-section hidden">
+                <div class="page-header">
+                    <h2 class="page-title">Upload Product</h2>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Product Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="productForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Product Name</label>
+                                    <input type="text" class="form-input" name="productName"
+                                        placeholder="Enter product name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select" name="category" required id="productCategorySelect">
+                                        <option value="">Select category</option>
+                                        <option value="Electronics">Electronics</option>
+                                        <option value="Toys">Toys</option>
+                                        <option value="Beauty Products">Beauty Products</option>
+                                        <option value="Mobiles">Mobiles</option>
+                                        <option value="Fashion">Fashion</option>
+                                        <option value="Home and Furniture">Home and Furniture</option>
+                                        <option value="Appliances">Appliances</option>
+                                        <option value="Two-Wheeler">Two-Wheeler</option>
+                                        <option value="Men's Grooming">Men's Grooming</option>
+                                        <option value="Food and Drinks">Food and Drinks</option>
+                                        <option value="Health Care">Health Care</option>
+                                        <option value="Baby care">Baby care</option>
+                                        <option value="Sports and fitness">Sports and fitness</option>
+                                        <option value="Books">Books</option>
+                                        <option value="Music">Music</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Price ($)</label>
+                                    <input type="number" class="form-input" name="price" placeholder="0.00" step="0.01"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Original Price ($)</label>
+                                    <input type="number" class="form-input" name="originalPrice" placeholder="0.00"
+                                        step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Stock Quantity</label>
+                                    <input type="number" class="form-input" name="stock" placeholder="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Discount (%)</label>
+                                    <input type="number" class="form-input" name="discount" placeholder="0" min="0"
+                                        max="100">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Tags</label>
+                                <div class="tags-container" id="tagsContainer">
+                                    <input type="text" class="tag-input" placeholder="Add tags..." id="tagInput">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-textarea" name="description"
+                                    placeholder="Enter product description" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Product Image URL</label>
+                                <input type="url" class="form-input" name="imageUrl"
+                                    placeholder="https://example.com/image.jpg" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Product Images</label>
+                                <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                                    <div class="file-upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <div class="file-upload-text">Click to upload images or drag and drop</div>
+                                    <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+                                </div>
+                                <div class="image-preview" id="imagePreview"></div>
+                            </div>
+
+                            <div class="flex justify-between mt-lg">
+                                <button type="button" class="btn btn-danger" onclick="resetForm()">Reset</button>
+                                <button type="submit" class="btn btn-success">Upload Product</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Delete</h3>
+                <button class="modal-close" aria-label="Close modal"
+                    onclick="closeModal('deleteModal')">&times;</button>
+            </div>
+            <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+            <div class="flex justify-between mt-lg">
+                <button class="btn btn-primary" onclick="closeModal('deleteModal')">Cancel</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Product</h3>
+                <button class="modal-close" aria-label="Close modal" onclick="closeModal('editModal')">&times;</button>
+            </div>
+            <form id="editProductForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Product Name</label>
+                        <input type="text" class="form-input" name="productName" id="editProductName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" name="category" id="editCategory" required>
+                            <option value="">Select category</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Toys">Toys</option>
+                            <option value="Beauty Products">Beauty Products</option>
+                            <option value="Mobiles">Mobiles</option>
+                            <option value="Fashion">Fashion</option>
+                            <option value="Home and Furniture">Home and Furniture</option>
+                            <option value="Appliances">Appliances</option>
+                            <option value="Two-Wheeler">Two-Wheeler</option>
+                            <option value="Men's Grooming">Men's Grooming</option>
+                            <option value="Food and Drinks">Food and Drinks</option>
+                            <option value="Health Care">Health Care</option>
+                            <option value="Baby care">Baby care</option>
+                            <option value="Sports and fitness">Sports and fitness</option>
+                            <option value="Books">Books</option>
+                            <option value="Music">Music</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Price ($)</label>
+                        <input type="number" class="form-input" name="price" id="editPrice" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Original Price ($)</label>
+                        <input type="number" class="form-input" name="originalPrice" id="editOriginalPrice" step="0.01"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Stock Quantity</label>
+                        <input type="number" class="form-input" name="stock" id="editStock" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Discount (%)</label>
+                        <input type="number" class="form-input" name="discount" id="editDiscount" min="0" max="100">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tags</label>
+                    <div class="tags-container" id="editTagsContainer">
+                        <input type="text" class="tag-input" placeholder="Add tags..." id="editTagInput">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" name="description" id="editDescription" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Product Image URL</label>
+                    <input type="url" class="form-input" name="imageUrl" id="editImageUrl" required>
+                </div>
+
+                <div class="flex justify-between mt-lg">
+                    <button type="button" class="btn btn-primary" onclick="closeModal('editModal')">Cancel</button>
+                    <button type="submit" class="btn btn-success">Update Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function checkAdminCredentials() {
+            const email = document.getElementById("adminEmail").value;
+            const pass = document.getElementById("adminPass").value;
+
+            const validEmail = "fake123@gmail.com";
+            const validPass = "123456789";
+
+            if (email === validEmail && pass === validPass) {
+                document.getElementById("adminLoginOverlay").style.display = "none";
+                initializeAdminPanel();
+                return false;
+            } else {
+                alert("Access Denied. Incorrect email or passkey.");
+                return false;
+            }
+        }
+
+        // Global variables
+        let currentSection = 'dashboard';
+        let deleteItemId = null;
+        let deleteItemType = null;
+        let editingProductId = null;
+        let charts = {};
+        let currentPeriod = 'monthly';
+        let productTags = [];
+        let editProductTags = [];
+
+        // Sample data for analytics
+        const monthlyRevenueData = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            data: [15000, 23000, 18000, 28000, 25000, 32000, 29000, 35000, 31000, 38000, 42000, 45000]
+        };
+
+        const yearlyRevenueData = {
+            labels: ['2020', '2021', '2022', '2023', '2024'],
+            data: [180000, 250000, 320000, 380000, 420000]
+        };
+
+        const monthlyCustomerData = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            data: [50, 75, 60, 90, 85, 110, 95, 125, 115, 140, 160, 180]
+        };
+
+        const yearlyCustomerData = {
+            labels: ['2020', '2021', '2022', '2023', '2024'],
+            data: [500, 750, 1200, 1800, 2400]
+        };
+
+        // Initialize the admin panel
+        function initializeAdminPanel() {
+            setupEventListeners();
+            loadDashboardData();
+            initializeCharts();
+            loadProducts();
+            loadCustomers();
+            checkTheme();
+            setupTagsInput();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Section navigation
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const section = this.getAttribute('data-section');
+                    showSection(section);
+                });
+            });
+
+            // Section buttons
+            document.querySelectorAll('[data-section]').forEach(button => {
+                if (button.classList.contains('sidebar-link')) return;
+                button.addEventListener('click', function (e) {
+                    const section = this.getAttribute('data-section');
+                    showSection(section);
+                });
+            });
+
+            // Theme toggle
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+            // Product form submission
+            document.getElementById('productForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                uploadProduct();
+            });
+
+            // Edit product form submission
+            document.getElementById('editProductForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                updateProduct();
+            });
+
+            // File input change
+            document.getElementById('fileInput').addEventListener('change', function (e) {
+                handleFileUpload(e.target.files);
+            });
+
+            // Period buttons
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const period = this.getAttribute('data-period');
+                    const chartType = this.getAttribute('data-chart');
+
+                    // Update active state
+                    this.parentElement.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Update chart
+                    updateChart(chartType, period);
+                });
+            });
+
+            // Filters
+            document.getElementById('customerSearch').addEventListener('input', filterCustomers);
+        }
+
+        // Setup tags input functionality
+        function setupTagsInput() {
+            setupTagsInputForContainer('tagsContainer', 'tagInput', productTags);
+            setupTagsInputForContainer('editTagsContainer', 'editTagInput', editProductTags);
+        }
+
+        function setupTagsInputForContainer(containerId, inputId, tagsArray) {
+            const container = document.getElementById(containerId);
+            const input = document.getElementById(inputId);
+
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    const tag = this.value.trim();
+                    if (tag && !tagsArray.includes(tag)) {
+                        tagsArray.push(tag);
+                        renderTags(containerId, inputId, tagsArray);
+                        this.value = '';
+                    }
+                }
+            });
+
+            input.addEventListener('blur', function () {
+                const tag = this.value.trim();
+                if (tag && !tagsArray.includes(tag)) {
+                    tagsArray.push(tag);
+                    renderTags(containerId, inputId, tagsArray);
+                    this.value = '';
+                }
+            });
+        }
+
+        function renderTags(containerId, inputId, tagsArray) {
+            const container = document.getElementById(containerId);
+            const input = document.getElementById(inputId);
+
+            // Clear existing tags
+            const existingTags = container.querySelectorAll('.tag');
+            existingTags.forEach(tag => tag.remove());
+
+            // Add tags before input
+            tagsArray.forEach((tag, index) => {
+                const tagElement = document.createElement('div');
+                tagElement.className = 'tag';
+                tagElement.innerHTML = `
+                    ${tag}
+                    <button type="button" class="tag-remove" onclick="removeTag(${index}, '${containerId}', '${inputId}', ${containerId === 'tagsContainer' ? 'productTags' : 'editProductTags'})">×</button>
+                `;
+                container.insertBefore(tagElement, input);
+            });
+        }
+
+        function removeTag(index, containerId, inputId, tagsArrayName) {
+            const tagsArray = tagsArrayName === 'productTags' ? productTags : editProductTags;
+            tagsArray.splice(index, 1);
+            renderTags(containerId, inputId, tagsArray);
+        }
+
+        // Show section
+        function showSection(sectionName) {
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            document.getElementById(sectionName).classList.remove('hidden');
+            document.querySelector(`.sidebar-link[data-section="${sectionName}"]`).classList.add('active');
+
+            currentSection = sectionName;
+
+            if (sectionName === 'analytics') {
+                setTimeout(initializeAnalyticsCharts, 100);
+            }
+        }
+
+        // Load dashboard data
+        function loadDashboardData() {
+            // Update stats from localStorage data
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+
+            // Calculate totals
+            const totalProducts = products.length;
+            const totalRevenue = 24567; // Sample data
+            const monthlyRevenue = 18945; // Sample data
+
+            // Update dashboard stats
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('totalSales').textContent = `$${totalRevenue.toLocaleString()}`;
+            document.getElementById('monthlyRevenue').textContent = `$${monthlyRevenue.toLocaleString()}`;
+            document.getElementById('totalCustomers').textContent = '856';
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            Chart.defaults.color = getComputedStyle(document.body).getPropertyValue('--text-secondary');
+            Chart.defaults.borderColor = getComputedStyle(document.body).getPropertyValue('--border-color');
+
+            // Revenue Overview Chart
+            const revenueCtx = document.getElementById('revenueOverviewChart').getContext('2d');
+            charts.revenueOverview = new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: monthlyRevenueData.labels,
+                    datasets: [{
+                        label: 'Revenue',
+                        data: monthlyRevenueData.data,
+                        borderColor: getComputedStyle(document.body).getPropertyValue('--color-pink'),
+                        backgroundColor: hexToRGBA(getComputedStyle(document.body).getPropertyValue('--color-pink'), 0.1),
+                        tension: 0.4,
+                        borderWidth: 3,
+                        fill: true
+                    }]
+                },
+                options: getChartOptions()
+            });
+
+            // Product Chart
+            const productCtx = document.getElementById('productChart').getContext('2d');
+            charts.product = new Chart(productCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Electronics', 'Fashion', 'Beauty', 'Books', 'Sports'],
+                    datasets: [{
+                        data: [45, 67, 34, 33, 25],
+                        backgroundColor: [
+                            getComputedStyle(document.body).getPropertyValue('--color-pink'),
+                            getComputedStyle(document.body).getPropertyValue('--color-green'),
+                            getComputedStyle(document.body).getPropertyValue('--color-orange'),
+                            getComputedStyle(document.body).getPropertyValue('--color-blue'),
+                            getComputedStyle(document.body).getPropertyValue('--color-purple')
+                        ],
+                        borderWidth: 2,
+                        borderColor: getComputedStyle(document.body).getPropertyValue('--bg-secondary')
+                    }]
+                },
+                options: getDoughnutChartOptions()
+            });
+        }
+
+        // Initialize analytics charts
+        function initializeAnalyticsCharts() {
+            Chart.defaults.color = getComputedStyle(document.body).getPropertyValue('--text-secondary');
+            Chart.defaults.borderColor = getComputedStyle(document.body).getPropertyValue('--border-color');
+
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            charts.revenue = new Chart(revenueCtx, {
+                type: 'bar',
+                data: {
+                    labels: monthlyRevenueData.labels,
+                    datasets: [{
+                        label: 'Revenue',
+                        data: monthlyRevenueData.data,
+                        backgroundColor: getComputedStyle(document.body).getPropertyValue('--color-blue'),
+                        borderRadius: 5
+                    }]
+                },
+                options: getChartOptions()
+            });
+
+            // Customer Growth Chart
+            const customerGrowthCtx = document.getElementById('customerGrowthChart').getContext('2d');
+            charts.customerGrowth = new Chart(customerGrowthCtx, {
+                type: 'line',
+                data: {
+                    labels: monthlyCustomerData.labels,
+                    datasets: [{
+                        label: 'New Customers',
+                        data: monthlyCustomerData.data,
+                        borderColor: getComputedStyle(document.body).getPropertyValue('--color-green'),
+                        backgroundColor: hexToRGBA(getComputedStyle(document.body).getPropertyValue('--color-green'), 0.1),
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 2
+                    }]
+                },
+                options: getChartOptions()
+            });
+
+            // Product Performance Chart
+            const productPerformanceCtx = document.getElementById('productPerformanceChart').getContext('2d');
+            charts.productPerformance = new Chart(productPerformanceCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Sales', 'Reviews', 'Returns', 'Profit', 'Stock'],
+                    datasets: [{
+                        label: 'Performance',
+                        data: [85, 90, 15, 80, 75],
+                        borderColor: getComputedStyle(document.body).getPropertyValue('--color-orange'),
+                        backgroundColor: hexToRGBA(getComputedStyle(document.body).getPropertyValue('--color-orange'), 0.2),
+                        borderWidth: 2,
+                        pointBackgroundColor: getComputedStyle(document.body).getPropertyValue('--color-orange')
+                    }]
+                },
+                options: getRadarChartOptions()
+            });
+
+            // Sales Distribution Chart
+            const salesDistributionCtx = document.getElementById('salesDistributionChart').getContext('2d');
+            charts.salesDistribution = new Chart(salesDistributionCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Online', 'In-Store', 'Mobile App', 'Phone Orders'],
+                    datasets: [{
+                        data: [45, 30, 20, 5],
+                        backgroundColor: [
+                            getComputedStyle(document.body).getPropertyValue('--color-pink'),
+                            getComputedStyle(document.body).getPropertyValue('--color-blue'),
+                            getComputedStyle(document.body).getPropertyValue('--color-green'),
+                            getComputedStyle(document.body).getPropertyValue('--color-orange')
+                        ],
+                        borderWidth: 2,
+                        borderColor: getComputedStyle(document.body).getPropertyValue('--bg-secondary')
+                    }]
+                },
+                options: getDoughnutChartOptions()
+            });
+        }
+
+        // Chart options
+        function getChartOptions() {
+            return {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: getComputedStyle(document.body).getPropertyValue('--bg-secondary'),
+                        titleColor: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                        bodyColor: getComputedStyle(document.body).getPropertyValue('--text-secondary'),
+                        borderColor: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: hexToRGBA(getComputedStyle(document.body).getPropertyValue('--border-color'), 0.1)
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            };
+        }
+
+        function getDoughnutChartOptions() {
+            return {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: getComputedStyle(document.body).getPropertyValue('--bg-secondary'),
+                        titleColor: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                        bodyColor: getComputedStyle(document.body).getPropertyValue('--text-secondary'),
+                        borderColor: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                        borderWidth: 1
+                    }
+                }
+            };
+        }
+
+        function getRadarChartOptions() {
+            return {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: getComputedStyle(document.body).getPropertyValue('--bg-secondary'),
+                        titleColor: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                        bodyColor: getComputedStyle(document.body).getPropertyValue('--text-secondary'),
+                        borderColor: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        angleLines: {
+                            color: hexToRGBA(getComputedStyle(document.body).getPropertyValue('--border-color'), 0.2)
+                        },
+                        grid: {
+                            color: hexToRGBA(getComputedStyle(document.body).getPropertyValue('--border-color'), 0.1)
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        // Update chart based on period
+        function updateChart(chartType, period) {
+            let chart, data;
+
+            if (chartType === 'revenue') {
+                chart = charts.revenue;
+                data = period === 'monthly' ? monthlyRevenueData : yearlyRevenueData;
+            } else if (chartType === 'customer') {
+                chart = charts.customerGrowth;
+                data = period === 'monthly' ? monthlyCustomerData : yearlyCustomerData;
+            } else {
+                // Revenue overview chart
+                chart = charts.revenueOverview;
+                data = period === 'monthly' ? monthlyRevenueData : yearlyRevenueData;
+            }
+
+            if (chart && data) {
+                chart.data.labels = data.labels;
+                chart.data.datasets[0].data = data.data;
+                chart.update();
+            }
+        }
+
+        // Load products
+        function loadProducts() {
+            const products = JSON.parse(localStorage.getItem('adminProducts')) || [
+            ];
+
+            const tableBody = document.getElementById('productsTable');
+            tableBody.innerHTML = products.map(product => `
+                <tr>
+                    <td><img src="${product.image}" alt="${product.name}" class="product-img"></td>
+                    <td>${product.name}</td>
+                    <td>$${product.price}</td>
+                    <td>${product.stock}</td>
+                    <td><span class="status-badge status-${product.status}">${product.status}</span></td>
+                    <td>
+                        <button class="btn-icon" onclick="editProduct('${product.id}')" aria-label="Edit product">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-icon" onclick="deleteProduct('${product.id}')" aria-label="Delete product">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Load customers
+        function loadCustomers() {
+            const customers = JSON.parse(localStorage.getItem('adminCustomers')) || [
+
+            ];
+
+            const tableBody = document.getElementById('customersTable');
+            tableBody.innerHTML = customers.map(customer => `
+                <tr>
+                    <td>${customer.id}</td>
+                    <td>${customer.name}</td>
+                    <td>${customer.email}</td>
+                    <td>${customer.phone}</td>
+                    <td>$${customer.totalSpent}</td>
+                    <td><span class="status-badge status-${customer.status}">${customer.status}</span></td>
+                    <td>
+                        <button class="btn-icon" onclick="viewCustomer('${customer.id}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Upload product
+        function uploadProduct() {
+            const formData = new FormData(document.getElementById('productForm'));
+            const productData = {
+                id: 'prod' + Date.now(),
+                name: formData.get('productName'),
+                category: formData.get('category'),
+                price: parseFloat(formData.get('price')),
+                originalPrice: parseFloat(formData.get('originalPrice')),
+                stock: parseInt(formData.get('stock')),
+                discount: parseInt(formData.get('discount')) || 0,
+                description: formData.get('description'),
+                image: formData.get('imageUrl'),
+                tags: [...productTags],
+                status: 'active',
+                dateAdded: new Date().toISOString()
+            };
+
+            // Save to localStorage
+            let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+            products.push(productData);
+            localStorage.setItem('adminProducts', JSON.stringify(products));
+
+            // Add to main site products (for logout.html)
+            let siteProducts = JSON.parse(localStorage.getItem('siteProducts')) || [];
+            const siteProduct = {
+                id: productData.id,
+                name: productData.name,
+                category: productData.category,
+                price: productData.price,
+                originalPrice: productData.originalPrice,
+                discount: productData.discount,
+                image: productData.image,
+                description: productData.description,
+                tags: productData.tags
+            };
+            siteProducts.push(siteProduct);
+            localStorage.setItem('siteProducts', JSON.stringify(siteProducts));
+
+            showNotification('Product uploaded successfully and added to main site!', 'success');
+            resetForm();
+            loadProducts();
+            loadDashboardData();
+        }
+
+        // Edit product
+        function editProduct(productId) {
+            const products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+            const product = products.find(p => p.id === productId);
+
+            if (!product) {
+                showNotification('Product not found!', 'error');
+                return;
+            }
+
+            editingProductId = productId;
+
+            // Populate the edit form
+            document.getElementById('editProductName').value = product.name;
+            document.getElementById('editCategory').value = product.category;
+            document.getElementById('editPrice').value = product.price;
+            document.getElementById('editOriginalPrice').value = product.originalPrice;
+            document.getElementById('editStock').value = product.stock;
+            document.getElementById('editDiscount').value = product.discount || 0;
+            document.getElementById('editDescription').value = product.description;
+            document.getElementById('editImageUrl').value = product.image;
+
+            // Set tags
+            editProductTags.length = 0;
+            if (product.tags && Array.isArray(product.tags)) {
+                editProductTags.push(...product.tags);
+            }
+            renderTags('editTagsContainer', 'editTagInput', editProductTags);
+
+            // Show the edit modal
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        // Update product
+        function updateProduct() {
+            if (!editingProductId) {
+                showNotification('No product selected for editing!', 'error');
+                return;
+            }
+
+            const formData = new FormData(document.getElementById('editProductForm'));
+            const updatedData = {
+                name: formData.get('productName'),
+                category: formData.get('category'),
+                price: parseFloat(formData.get('price')),
+                originalPrice: parseFloat(formData.get('originalPrice')),
+                stock: parseInt(formData.get('stock')),
+                discount: parseInt(formData.get('discount')) || 0,
+                description: formData.get('description'),
+                image: formData.get('imageUrl'),
+                tags: [...editProductTags],
+                dateModified: new Date().toISOString()
+            };
+
+            // Update in admin products
+            let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+            const productIndex = products.findIndex(p => p.id === editingProductId);
+
+            if (productIndex !== -1) {
+                products[productIndex] = { ...products[productIndex], ...updatedData };
+                localStorage.setItem('adminProducts', JSON.stringify(products));
+
+                // Update in site products
+                let siteProducts = JSON.parse(localStorage.getItem('siteProducts')) || [];
+                const siteProductIndex = siteProducts.findIndex(p => p.id === editingProductId);
+
+                if (siteProductIndex !== -1) {
+                    const siteProduct = {
+                        id: editingProductId,
+                        name: updatedData.name,
+                        category: updatedData.category,
+                        price: updatedData.price,
+                        originalPrice: updatedData.originalPrice,
+                        discount: updatedData.discount,
+                        image: updatedData.image,
+                        description: updatedData.description,
+                        tags: updatedData.tags
+                    };
+                    siteProducts[siteProductIndex] = siteProduct;
+                    localStorage.setItem('siteProducts', JSON.stringify(siteProducts));
+                }
+
+                showNotification('Product updated successfully!', 'success');
+                closeModal('editModal');
+                loadProducts();
+                loadDashboardData();
+                editingProductId = null;
+            } else {
+                showNotification('Product not found!', 'error');
+            }
+        }
+
+        // Filter customers
+        function filterCustomers() {
+            const filter = document.getElementById('customerSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#customersTable tr');
+
+            rows.forEach(row => {
+                const name = row.cells[1]?.textContent.toLowerCase();
+                const email = row.cells[2]?.textContent.toLowerCase();
+                if (!filter || name.includes(filter) || email.includes(filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('productForm').reset();
+            document.getElementById('imagePreview').innerHTML = '';
+            productTags.length = 0;
+            renderTags('tagsContainer', 'tagInput', productTags);
+        }
+
+        // Handle file upload
+        function handleFileUpload(files) {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+
+            Array.from(files).forEach((file, index) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item';
+                        previewItem.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview">
+                            <button class="preview-remove" onclick="removePreview(this)">×</button>
+                        `;
+                        preview.appendChild(previewItem);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            if (files.length > 0) {
+                showNotification(`${files.length} file(s) selected for upload`, 'info');
+            }
+        }
+
+        function removePreview(button) {
+            button.parentElement.remove();
+        }
+
+        // Delete product
+        function deleteProduct(productId) {
+            deleteItemId = productId;
+            deleteItemType = 'product';
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        // View customer
+        function viewCustomer(customerId) {
+            showNotification(`View customer ${customerId} - Feature coming soon!`, 'info');
+        }
+
+        // Confirm delete
+        function confirmDelete() {
+            if (deleteItemId && deleteItemType) {
+                if (deleteItemType === 'product') {
+                    let products = JSON.parse(localStorage.getItem('adminProducts')) || [];
+                    products = products.filter(p => p.id !== deleteItemId);
+                    localStorage.setItem('adminProducts', JSON.stringify(products));
+
+                    // Also remove from site products
+                    let siteProducts = JSON.parse(localStorage.getItem('siteProducts')) || [];
+                    siteProducts = siteProducts.filter(p => p.id !== deleteItemId);
+                    localStorage.setItem('siteProducts', JSON.stringify(siteProducts));
+
+                    loadProducts();
+                    loadDashboardData();
+                }
+
+                showNotification(`${deleteItemType} deleted successfully!`, 'success');
+                closeModal('deleteModal');
+                deleteItemId = null;
+                deleteItemType = null;
+            }
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            if (modalId === 'editModal') {
+                editingProductId = null;
+                editProductTags.length = 0;
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+
+            let icon = '';
+            switch (type) {
+                case 'success':
+                    icon = '<i class="fas fa-check-circle"></i>';
+                    break;
+                case 'error':
+                    icon = '<i class="fas fa-exclamation-circle"></i>';
+                    break;
+                default:
+                    icon = '<i class="fas fa-info-circle"></i>';
+            }
+
+            notification.innerHTML = `${icon} ${message}`;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function (e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+                if (e.target.id === 'editModal') {
+                    editingProductId = null;
+                    editProductTags.length = 0;
+                }
+            }
+        });
+
+        // Toggle dark theme
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeBtn = document.getElementById('themeToggle');
+            const currentTheme = html.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            html.setAttribute('data-theme', newTheme);
+
+            if (newTheme === 'dark') {
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+
+            localStorage.setItem('admin-theme', newTheme);
+            updateChartsForTheme();
+        }
+
+        // Check for saved theme preference
+        function checkTheme() {
+            const savedTheme = localStorage.getItem('admin-theme');
+            const themeBtn = document.getElementById('themeToggle');
+
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+
+                if (savedTheme === 'dark') {
+                    themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                } else {
+                    themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                }
+            }
+        }
+
+        // Update charts when theme changes
+        function updateChartsForTheme() {
+            setTimeout(() => {
+                Object.values(charts).forEach(chart => {
+                    if (chart) chart.destroy();
+                });
+                charts = {};
+
+                if (currentSection === 'dashboard') {
+                    initializeCharts();
+                } else if (currentSection === 'analytics') {
+                    initializeAnalyticsCharts();
+                }
+            }, 100);
+        }
+
+        // Convert hex to rgba
+        function hexToRGBA(hex, alpha) {
+            hex = hex.trim();
+            if (hex.startsWith('#')) {
+                hex = hex.substring(1);
+            }
+
+            if (hex.length === 3) {
+                hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+            }
+
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        // Sync data across pages
+        function syncDataAcrossPages() {
+            // Listen for storage changes to sync data
+            window.addEventListener('storage', function (e) {
+                if (e.key === 'cart' || e.key === 'wishlist') {
+                    loadDashboardData();
+                }
+            });
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            syncDataAcrossPages();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #8b0000;
+      --accent-color: #d4af37;
+      --text-color: #333;
+      --bg-color: #f8f5f0;
+      --card-bg: #fff;
+      --header-bg: #2c2c2c;
+      --header-text: #f8f5f0;
+      --footer-bg: #2c2c2c;
+      --footer-text: #f8f5f0;
+      --border-color: #d1c7b7;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    .dark-theme {
+      --primary-color: #d4af37;
+      --accent-color: #d000df;
+      --text-color: #e0e0e0;
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --header-bg: #000;
+      --header-text: #f0f0f0;
+      --footer-bg: #000;
+      --footer-text: #f0f0f0;
+      --border-color: #333;
+      --box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Poppins', sans-serif;
+      transition: var(--transition);
+    }
+
+    header, footer {
+      background-color: var(--header-bg);
+      color: var(--header-text);
+      text-align: center;
+      padding: 1.5rem 1rem;
+      position: relative;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: var(--card-bg);
+      box-shadow: var(--box-shadow);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    h1, h2 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin: 0.8rem 0;
+      font-size: 1rem;
+    }
+
+    a {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button#themeToggle {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      background-color: var(--primary-color);
+      color: var(--header-text);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    button#themeToggle:hover {
+      background-color: var(--accent-color);
+      color: #000;
+    }
+
+    footer {
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding: 1rem;
+      }
+
+      button#themeToggle {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Contact Us</h1>
+    <button id="themeToggle">Toggle Theme</button>
+  </header>
+  <main>
+    <p>Have questions? Reach out to us:</p>
+    <p>Email: <a href="mailto:support@yourstore.com">support@yourstore.com</a></p>
+    <p>Phone: <a href="tel:+917989552340">+91 7989552340</a></p>
+    <p>Address: 123 Customer Street, India</p>
+  </main>
+  <footer>
+    &copy; 2025 YourStore. All rights reserved.
+  </footer>
+  <script>
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      document.body.classList.toggle("dark-theme");
+    });
+  </script>
+</body>
+</html>

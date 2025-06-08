@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipping</title>
+  <style>
+    :root {
+      --primary-color: #8b0000;
+      --accent-color: #d4af37;
+      --text-color: #333;
+      --bg-color: #f8f5f0;
+      --card-bg: #fff;
+      --header-bg: #2c2c2c;
+      --header-text: #f8f5f0;
+      --footer-bg: #2c2c2c;
+      --footer-text: #f8f5f0;
+      --border-color: #d1c7b7;
+      --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    .dark-theme {
+      --primary-color: #d4af37;
+      --accent-color: #d000df;
+      --text-color: #e0e0e0;
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --header-bg: #000000;
+      --header-text: #f0f0f0;
+      --footer-bg: #000000;
+      --footer-text: #f0f0f0;
+      --border-color: #333;
+      --box-shadow: 0 4px 8px rgba(255, 255, 255, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
+      transition: var(--transition);
+      padding: 1rem;
+    }
+
+    header,
+    footer {
+      background-color: var(--header-bg);
+      color: var(--header-text);
+      text-align: center;
+      padding: 1rem;
+    }
+
+    main {
+      max-width: 800px;
+      margin: auto;
+      padding: 2rem;
+      text-align: center;
+      background-color: var(--card-bg);
+      box-shadow: var(--box-shadow);
+      border: 1px solid var(--border-color);
+    }
+
+    h1,
+    h2 {
+      color: var(--primary-color);
+    }
+
+    a {
+      color: var(--accent-color);
+    }
+
+    button#themeToggle {
+      margin-top: 1rem;
+      background-color: var(--primary-color);
+      color: var(--header-text);
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Shipping Policy</h1>
+    <button id="themeToggle">Toggle Theme</button>
+  </header>
+  <main>
+    <p>We offer standard shipping across India. Orders are processed within 2–3 business days and delivered in 5–7 days.
+    </p>
+    <p>Free shipping on orders over ₹999.</p>
+  </main>
+  <footer>
+    &copy; 2025 YourStore. All rights reserved.
+  </footer>
+  <script>
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      document.body.classList.toggle("dark-theme");
+    });
+  </script>
+</body>
+
+</html>

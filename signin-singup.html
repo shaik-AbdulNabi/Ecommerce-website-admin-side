@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auth Form</title>
+    <style>
+        :root {
+            --primary-color: #8b0000;
+            --accent-color: #d4af37;
+            --text-color: #333;
+            --bg-color: #f8f5f0;
+            --card-bg: #fff;
+            --header-bg: #2c2c2c;
+            --header-text: #f8f5f0;
+            --border-color: #d1c7b7;
+            --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --tab-inactive: #e5e7eb;
+        }
+
+        .dark-theme {
+            --primary-color: #d4af37;
+            --accent-color: #d000df;
+            --text-color: #e0e0e0;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --header-bg: #000000;
+            --header-text: #f0f0f0;
+            --border-color: #333;
+            --box-shadow: 0 4px 8px rgba(255, 255, 255, 0.05);
+            --tab-inactive: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            background: radial-gradient(circle at center, var(--accent-color), var(--bg-color));
+            align-items: center;
+        }
+
+        body.dark-theme {
+            background: radial-gradient(circle at center, var(--text-color), var(--border-color));
+        }
+
+        .container {
+            width: 350px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: 0.5s ease-in-out;
+        }
+
+        .tabs {
+            display: flex;
+        }
+
+        .tabs button {
+            width: 50%;
+            padding: 15px;
+            border: none;
+            background: var(--tab-inactive);
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            color: var(--text-color);
+        }
+
+        .tabs button.active {
+            background-color: var(--accent-color);
+            color: black;
+        }
+
+        .form-container {
+            display: flex;
+            width: 700px;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .form-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 350px;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        button.submit {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--accent-color);
+            color: black;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button.submit:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .link1 {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .link1 a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .link1 a:hover {
+            text-decoration: underline;
+            color: black;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+        #username.dark-theme
+        {
+            color: whitesmoke;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="theme-toggle" id="themeToggle">Dark Mode</button>
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">Sign In</button>
+            <button class="tab-btn" onclick="switchTab(1)">Sign Up</button>
+        </div>
+        <div class="form-container" id="formSlider">
+            <div class="form-box" id="signin">
+                <h2>Sign In</h2>
+                <form action="logout.html" method="get">
+                    <label style="color: var(--text-color);">Username</label>
+                    <input type="text" name="username" id="username" placeholder="Enter your Username" required>
+                    <label style="color: var(--text-color);">Email</label>
+                    <input type="email" name="email" id="email" placeholder="Enter your email" required />
+                    <label style="color: var(--text-color);">Password</label>
+                    <input type="password" name="password" itemref="password" placeholder="Enter your password" required />
+                    <button type="submit" class="submit">Sign In</button>
+                    <p class="link1"><a href="forgot.html">Forgot password?</a></p>
+                </form>
+            </div>
+
+            <div class="form-box">
+                <h2>Sign Up</h2>
+                <form action="logout.html" method="get" id="signupForm">
+                    <label style="color: var(--text-color);">Username</label>
+                    <input type="text" name="username" placeholder="Enter your username" required />
+                    <label style="color: var(--text-color);">Email</label>
+                    <input type="email" placeholder="Enter your email" required />
+                    <label style="color: var(--text-color);">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Enter your password" required />
+                    <label style="color: var(--text-color);">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required />
+                    <button type="submit" class="submit">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(index) {
+            const slider = document.getElementById('formSlider');
+            const tabs = document.querySelectorAll('.tab-btn');
+
+            // Move slider
+            slider.style.transform = `translateX(-${index * 350}px)`;
+
+            // Update active tab button
+            tabs.forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+        }
+
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            themeToggle.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+
+            // Save preference to localStorage
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-theme');
+            themeToggle.textContent = 'Light Mode';
+        }
+
+        // Password matching validation for Sign Up form
+        const signupForm = document.getElementById('signupForm');
+        signupForm.addEventListener('submit', function(event) {
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
